@@ -1,5 +1,5 @@
 ```yaml
-name: Build TWRP for ctwo
+name: twrp
 
 on:
   push:
