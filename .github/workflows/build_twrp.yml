@@ -15,21 +15,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Set up environment
       - name: Set up build environment
         run: |
           sudo apt-get update
           sudo apt-get install -y git-core gnupg flex bison build-essential zip curl zlib1g-dev \
-          gcc-multilib g++-multilib libc6-dev-i386 libncurses5-dev lib32ncurses5-dev \
-          x11proto-core-dev libx11-dev lib32z1-dev libgl1-mesa-dev libxml2-utils xsltproc unzip fontconfig
+            gcc-multilib g++-multilib libc6-dev-i386 libncurses5-dev lib32ncurses5-dev \
+            x11proto-core-dev libx11-dev lib32z1-dev libgl1-mesa-dev libxml2-utils xsltproc unzip fontconfig
           sudo apt-get install -y python3 python3-pip
           pip3 install --user repo
 
-      # Initialize and sync TWRP repository
       - name: Initialize repo
         run: |
           mkdir -p ~/twrp
@@ -42,7 +39,6 @@ jobs:
           </manifest>' > .repo/local_manifests/roomservice.xml
           repo sync -j$(nproc --all) --force-sync
 
-      # Build TWRP
       - name: Build TWRP
         run: |
           cd ~/twrp
@@ -52,21 +48,19 @@ jobs:
           lunch twrp_ctwo-eng
           mka recoveryimage
 
-      # Upload recovery image as artifact
       - name: Upload recovery image
         uses: actions/upload-artifact@v4
         with:
           name: twrp_ctwo_recovery
           path: ~/twrp/out/target/product/ctwo/recovery.img
 
-      # Create GitHub Release
       - name: Create Release
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: "twrp-12.1-ctwo-${{ github.run_number }}"
-          name: "TWRP 12.1 for Moto ctwo (Build #${{ github.run_number }})"
-          body: "Automated TWRP 12.1 build for Motorola ctwo"
+          tag_name: twrp-12.1-ctwo-${{ github.run_number }}
+          name: TWRP 12.1 for Moto ctwo (Build #${{ github.run_number }})
+          body: Automated TWRP 12.1 build for Motorola ctwo
           files: ~/twrp/out/target/product/ctwo/recovery.img
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
