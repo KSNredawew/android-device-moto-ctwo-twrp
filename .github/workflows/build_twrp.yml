@@ -59,7 +59,8 @@ jobs:
           tag_name: twrp-12.1-ctwo-${{ github.run_number }}
           name: TWRP 12.1 for Moto ctwo (Build #${{ github.run_number }})
           body: Automated TWRP 12.1 build for Motorola ctwo
-          files: ~/twrp/out/target/product/ctwo/recovery.img
+          files: |
+            ~/twrp/out/target/product/ctwo/recovery.img
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
