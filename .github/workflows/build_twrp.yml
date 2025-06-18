@@ -63,4 +63,3 @@ jobs:
             ~/twrp/out/target/product/ctwo/recovery.img
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-```
